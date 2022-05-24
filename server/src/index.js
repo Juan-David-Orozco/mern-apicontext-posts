@@ -3,5 +3,5 @@ import {connectDB} from './db.js'
 
 connectDB()
 
-app.listen(4000)
-console.log('Server runing, port:', 4000)
+app.listen(5000)
+console.log('Server runing, port:', 5000)
