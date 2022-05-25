@@ -4,7 +4,6 @@ import fs from 'fs-extra'
 
 export const getPosts = async (req, res) => {
   try {
-    //throw new Error('my new error!!!')
     const posts = await Post.find()
     return res.json(posts)
   } catch (error) {
@@ -18,7 +17,7 @@ export const createPost = async (req, res) => {
     const {title, description} = req.body
 
     let image;
-    if(req.files.image) {
+    if(req.files && req.files.image) {
       const result = await uploadImage(req.files.image.tempFilePath)
       await fs.remove(req.files.image.tempFilePath)
       image = {
@@ -31,7 +30,7 @@ export const createPost = async (req, res) => {
     await newPost.save()
     return res.json(newPost)
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     return res.status(500).json({message: error.message})
   }
 }
