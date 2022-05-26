@@ -1,18 +1,22 @@
-import { useState, createContext } from "react"
+import { useState, createContext, useContext } from "react"
 
-export const context = createContext()
+const postContext = createContext()
 
-export const PostContainer = ({children}) => {
+export const usePosts = () => {
+  const context = useContext(postContext)
+  return context
+}
+
+export const PostProvider = ({children}) => {
 
   const [posts, setPosts] = useState([])
-  console.log(posts)
 
   return (
-    <context.Provider value={{
+    <postContext.Provider value={{
       posts,
-      setPosts
+      //setPosts
     }}>
       {children}
-    </context.Provider>
+    </postContext.Provider>
   )
 }
