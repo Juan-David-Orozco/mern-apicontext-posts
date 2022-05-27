@@ -16,7 +16,7 @@ export function HomePage() {
 
   return (
     <div>
-      <Link to="/new">Crear Nuevo Post</Link>
+      <Link className='text-white' to="/new">Crear Nuevo Post</Link>
       <div className='grid grid-cols-3 gap-2'>
         {
           posts.map((post) => (

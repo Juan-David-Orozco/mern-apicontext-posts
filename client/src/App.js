@@ -11,6 +11,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage/>}/>
             <Route path="/new" element={<PostForm/>}/>
+            <Route path="/posts/:id" element={<PostForm/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
           </Routes>
           <Toaster/>

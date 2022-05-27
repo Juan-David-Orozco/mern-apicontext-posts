@@ -11,3 +11,7 @@ export const createPostRequest = async (post) => {
 export const deletePostRequest = async (postId) => {
   return await axios.delete(`/posts/${postId}`)
 }
+
+export const getPostRequest = async (postId) => {
+  return await axios.get(`/posts/${postId}`)
+}
