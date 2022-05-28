@@ -1,5 +1,10 @@
 import { useState, useEffect, createContext, useContext } from "react"
-import { createPostRequest, getPostsRequests, deletePostRequest, getPostRequest } from '../api/posts'
+import {
+  createPostRequest,
+  getPostsRequests,
+  deletePostRequest,
+  getPostRequest,
+  updatePostRequest } from '../api/posts'
 
 const postContext = createContext()
 
@@ -35,8 +40,23 @@ export const PostProvider = ({children}) => {
 
   const getPost = async (postId) => {
     const res = await getPostRequest(postId)
-    console.log(res.data)
+    //console.log(res.data)
     return res.data
+  }
+
+  const updatePost = async (id, post) => {
+    // Respuesta BackEnd
+    const res = await updatePostRequest(id, post)
+    console.log(res)
+    // Modificacion Estado FrontEnd
+    /* Internamente se construye un array en donde se
+    modifica (actualiza) unica/ el elemento que coincide
+    con el id que se paso por la URL el resto de posts
+    quedan iguales, finalmente se pasa al setPosts
+    para modificar el estado posts */
+    const arrayUpdatePosts = posts.map((post) => (post._id === id ? res.data : post))
+    console.log(arrayUpdatePosts)
+    setPosts(arrayUpdatePosts)
   }
 
   useEffect(() => {
@@ -49,7 +69,8 @@ export const PostProvider = ({children}) => {
       getPosts,
       createPost,
       deletePost,
-      getPost
+      getPost,
+      updatePost,
       //setPosts
     }}>
       {children}

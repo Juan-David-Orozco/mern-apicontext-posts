@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 
 export function PostForm() {
 
-  const { createPost, getPost } = usePosts()
+  const { createPost, getPost, updatePost } = usePosts()
 
   const navigate = useNavigate()
 
@@ -21,13 +21,12 @@ export function PostForm() {
   useEffect(() => {
     (async () => { //Funcion inmediata/ invocada
       if(params.id){
-        console.log(params)
+        //console.log(params)
         const data = await getPost(params.id)
-        console.log(data)
         setPost(data)
       }
     })();
-  }, [])
+  }, [params.id]) // Se añade params.id por warning console
 
   return (
     <div className='text-white flex items-center justify-center'>
@@ -46,8 +45,17 @@ export function PostForm() {
             description: Yup.string().required("Descripcion requerida")
           })}
           onSubmit={async (values, actions) => {
-            await createPost(values)
+
+            console.log(values)
+
+            if(params.id){
+              await updatePost(params.id, values)
+            } else {
+              await createPost(values)
+            }
+
             navigate('/')
+
           }}
           enableReinitialize
         >
