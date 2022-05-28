@@ -5,7 +5,17 @@ export const getPostsRequests = async () => {
 }
 
 export const createPostRequest = async (post) => {
-  return await axios.post('/posts', post)
+  const form = new FormData()
+
+  for (let key in post) {
+    form.append(key, post[key])
+  }
+
+  return await axios.post('/posts', form, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  })
 }
 
 export const deletePostRequest = async (postId) => {

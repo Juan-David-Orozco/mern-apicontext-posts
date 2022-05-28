@@ -3,7 +3,7 @@ import * as Yup from 'yup'
 import { usePosts } from '../context/postContext'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 export function PostForm() {
 
@@ -15,7 +15,8 @@ export function PostForm() {
 
   const [post, setPost] = useState({
     title:'',
-    description: ''
+    description: '',
+    image: null
   })
 
   useEffect(() => {
@@ -42,10 +43,9 @@ export function PostForm() {
           initialValues={post}
           validationSchema={Yup.object({
             title: Yup.string().required("Titulo requerido"),
-            description: Yup.string().required("Descripcion requerida")
+            description: Yup.string().required("Descripcion requerida"),
           })}
           onSubmit={async (values, actions) => {
-
             console.log(values)
 
             if(params.id){
@@ -54,12 +54,13 @@ export function PostForm() {
               await createPost(values)
             }
 
-            navigate('/')
+            actions.setSubmitting(false)
 
+            navigate('/')
           }}
           enableReinitialize
         >
-          {({ handleSubmit }) => ( // Se coloca dentro de una ejecucion de funcion
+          {({ handleSubmit, setFieldValue, isSubmitting }) => ( // Se coloca dentro de una ejecucion de funcion
             <Form onSubmit={handleSubmit}>
               <label
                 htmlFor='title'
@@ -72,7 +73,7 @@ export function PostForm() {
               />
               <ErrorMessage component="p" className='text-red-400 text-sm' name='title' />
               <label
-                htmlFor='descripction'
+                htmlFor='description'
                 className='text-sm block font-bold text-gray-400'
               >
                 Description
@@ -81,12 +82,28 @@ export function PostForm() {
                 className='my-1 px-3 py-2 focus:outline-none rounded bg-gray-600 w-full'
               />
               <ErrorMessage component="p" className='text-red-400 text-sm' name='description' />
+              <label
+                htmlFor='file'
+                className='text-sm block font-bold text-gray-400'
+              >
+                File
+              </label>
+              <input type="file" name="image"
+                className='px-3 py-2 focus:outline-none rounded bg-gray-600 text-white w-full'
+                onChange={(e) => {
+                  console.log(e.target.files[0])
+                  setFieldValue('image', e.target.files[0])
+                }}
+              />
               <button
                 type="submit"
                 className='bg-indigo-600 hover:bg-indigo-400 px-4 py-2
                 rounded mt-2 focus:outline-none disabled:bg-indigo-300 '
+                disabled={isSubmitting}
               >
-                Save
+                {isSubmitting ? (
+                  <AiOutlineLoading3Quarters className='animate-spin h-5 w-5' />
+                ) : 'Save'}
               </button>
             </Form>
           )}
