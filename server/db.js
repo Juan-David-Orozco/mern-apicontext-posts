@@ -1,14 +1,18 @@
 import mongoose from "mongoose";
+import { MONGODB_URI } from "./config.js";
 
 //const URI = process.env.MONGOOSE_URI ? process.env.MONGOOSE_URI : 'mongodb://localhost/postsDB';
 
 export async function connectDB () {
   try {
-    const URI = 'mongodb://localhost/postsDB'
-    const db = await mongoose.connect(URI);
-    console.log("Connected to", db.connection.name)
+    await mongoose.connect(MONGODB_URI);
+    //console.log("Connected to", db.connection.name)
   } catch (error) {
-    console.log(error.mensaje)
+    console.log(error)
   }
 }
+
+mongoose.connection.on("connected", () => {
+  console.log("Mongodb is connected to", mongoose.connection.db.databaseName);
+});
 
