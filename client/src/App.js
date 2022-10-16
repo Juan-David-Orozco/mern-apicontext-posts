@@ -6,7 +6,7 @@ import { Toaster } from 'react-hot-toast'
 export default function App() {
   return (
     <div className="bg-neutral-900 min-h-screen flex items-center">
-      <div className="px-10 container m-auto rounded">
+      <div className="px-5 container m-auto rounded">
         <PostProvider>
           <Routes>
             <Route path="/" element={<HomePage/>}/>
